@@ -27,6 +27,7 @@ class MainActivity : ComponentActivity() {
     // 声明本地方法
     private external fun greet(input: String): String
     private external fun say(input: String): String
+    private external fun getApi(): String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,6 +46,14 @@ class MainActivity : ComponentActivity() {
                         Log.d("RustFFI", sayOut) //
                     }) {
                         Text("我是一个按钮")
+                    }
+
+                    //按钮
+                    Button(onClick = {
+                       val apiStr =  getApi()
+                        Log.d("RustFFI", apiStr) //
+                    }) {
+                        Text("发起一个网络请求")
                     }
 
 
