@@ -35,47 +35,8 @@ pub extern "C" fn Java_com_galigeigei_rustapplication_MainActivity_say(
     env.new_string(output).expect("无法创建 Java 字符串").into_raw()
 }
 
-const PC_API_URL: &str = "https://open.iot.vlinkc.com/device/control";
-const PC_API_TOKEN: &str = "STI3ZkFGTUpDZ3ZZUm84bkx5bFlaMHlKVnRJYW1aVWp5aHF3RnVaYWw1WGlKYnZhdTBGSkRZR1JoQzIvVWJlM2RwNmhiNVFUbVM5VGJybFQ4UjVKMGRzNE9Ba2xzSktzYWo3NEIyNGZTVmc9";
+const PC_API_URL: &str = "http://192.168.31.225:8080";
 
-/// 操作:Status-状态,On-开机,off-关机,reset-重启,off_force-强制关机;
-enum ActionType {
-    Status,
-    On,
-    Off,
-    Reset,
-    OffForce,
-}
-// 实现 ToString trait，将枚举转换为字符串
-impl Display for ActionType {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        let str = match self {
-            ActionType::Status => "status",
-            ActionType::On => "on",
-            ActionType::Off => "off",
-            ActionType::Reset => "reset",
-            ActionType::OffForce => "off_force",
-        }
-            .to_string();
-        write!(f, "{}", str)
-    }
-}
-
-// 实现 FromStr trait，从字符串解析枚举
-impl FromStr for ActionType {
-    type Err = ();
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        match s.to_lowercase().as_str() {
-            "status" => Ok(ActionType::Status),
-            "on" => Ok(ActionType::On),
-            "off" => Ok(ActionType::Off),
-            "reset" => Ok(ActionType::Reset),
-            "off_force" => Ok(ActionType::OffForce),
-            _ => Err(()), // 如果无法匹配，返回错误
-        }
-    }
-}
 #[no_mangle]
 pub  async extern "C" fn Java_com_galigeigei_rustapplication_MainActivity_getApi<'a>(
     env: JNIEnv<'a>,
@@ -87,10 +48,6 @@ pub  async extern "C" fn Java_com_galigeigei_rustapplication_MainActivity_getApi
     // 发起 HTTP 请求
     let result = client
         .get(PC_API_URL)
-        .query(&[
-            ("action", ActionType::Status.to_string()),
-            ("token", String::from(PC_API_TOKEN)),
-        ])
         .send()
         .await;
 

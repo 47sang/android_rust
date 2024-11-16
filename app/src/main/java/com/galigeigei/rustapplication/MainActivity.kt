@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -36,41 +37,45 @@ class MainActivity : ComponentActivity() {
         setContent {
             RustApplicationTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                    //按钮
-                    Button(onClick = {
-                       val sayOut =  say("你想说的话")
-                        Log.d("RustFFI", sayOut) //
-                    }) {
-                        Text("我是一个按钮")
+                    Column {
+                        Greeting(
+                            name = "Android", modifier = Modifier.padding(innerPadding)
+                        )
+                        //按钮
+                        Button(onClick = {
+                            val sayOut = say("你想说的话")
+                            Log.d("RustFFI", sayOut) //
+                        }) {
+                            Text("我是一个按钮")
+                        }
+
+
+                        //按钮
+                        Button(onClick = {
+                            val apiStr = getApi()
+                            Log.d("RustFFI", apiStr) //
+                        }) {
+                            Text("发起一个网络请求")
+                        }
+
+
+                        // 调用本地方法
+                        val greeting = greet("Rust")
+                        Log.d("RustFFI", "输出生成的rust调用函数的结果: $greeting")
+                        // 输出 "Greeting: Hello, Rust!"
+
                     }
-
-                    //按钮
-                    Button(onClick = {
-                       val apiStr =  getApi()
-                        Log.d("RustFFI", apiStr) //
-                    }) {
-                        Text("发起一个网络请求")
-                    }
-
-
-                    // 调用本地方法
-                    val greeting = greet("Rust")
-                    Log.d("RustFFI", "输出生成的rust调用函数的结果: $greeting") // 输出 "Greeting: Hello, Rust!"
                 }
             }
         }
+
     }
 }
 
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Hello $name!",
-        modifier = modifier
+        text = "Hello $name!", modifier = modifier
     )
 }
 
