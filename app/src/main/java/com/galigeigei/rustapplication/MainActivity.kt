@@ -16,6 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.galigeigei.rustapplication.ui.theme.RustApplicationTheme
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+
 class MainActivity : ComponentActivity() {
 
     // 加载 Rust 生成的库
@@ -52,8 +57,14 @@ class MainActivity : ComponentActivity() {
 
                         //按钮
                         Button(onClick = {
-                            val apiStr = getApi()
-                            Log.d("RustFFI", apiStr)
+                            // 在协程中调用异步方法
+                            CoroutineScope(Dispatchers.IO).launch {
+                                val apiStr = getApi() // 在后台线程运行
+                                withContext(Dispatchers.Main) {
+                                    // 切换到主线程更新 UI 或日志
+                                    Log.d("RustFFI", apiStr)
+                                }
+                            }
                         }) {
                             Text("发起一个网络请求")
                         }
