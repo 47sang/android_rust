@@ -8,6 +8,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 jni = "0.21.1"
-reqwest = { version = "0.12.9", features =["json","rustls-tls"], default-features = false }
+reqwest = { version = "0.12.9", features = ["json", "rustls-tls"], default-features = false }
 serde_json = "1.0.132"
 serde = { version = "1.0", features = ["derive"] }
+tokio = { version = "1.41.1", features = ["full"] }

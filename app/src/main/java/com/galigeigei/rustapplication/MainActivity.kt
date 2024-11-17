@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
                         //按钮
                         Button(onClick = {
                             val apiStr = getApi()
-                            Log.d("RustFFI", apiStr) //
+                            Log.d("RustFFI", apiStr)
                         }) {
                             Text("发起一个网络请求")
                         }
