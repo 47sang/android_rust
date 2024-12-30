@@ -22,20 +22,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
-
-    // 加载 Rust 生成的库
-    companion object {
-        init {
-            System.loadLibrary("rust_c") // 替换为 Rust 项目生成的库名
-        }
-    }
-
-    // 声明本地方法
-    private external fun greet(input: String): String
-    private external fun say(input: String): String
-    private external fun getApi(): String
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -48,18 +34,17 @@ class MainActivity : ComponentActivity() {
                         )
                         //按钮
                         Button(onClick = {
-                            val sayOut = say("你想说的话")
-                            Log.d("RustFFI", sayOut) //
+                            val sayOut = RustLib.say("你想说的话")
+                            Log.d("RustFFI", sayOut)
                         }) {
                             Text("我是一个按钮")
                         }
-
 
                         //按钮
                         Button(onClick = {
                             // 在协程中调用异步方法
                             CoroutineScope(Dispatchers.IO).launch {
-                                val apiStr = getApi() // 在后台线程运行
+                                val apiStr = RustLib.getApi() // 在后台线程运行
                                 withContext(Dispatchers.Main) {
                                     // 切换到主线程更新 UI 或日志
                                     Log.d("RustFFI", apiStr)
@@ -69,17 +54,13 @@ class MainActivity : ComponentActivity() {
                             Text("发起一个网络请求")
                         }
 
-
                         // 调用本地方法
-                        val greeting = greet("Rust")
+                        val greeting = RustLib.greet("Rust")
                         Log.d("RustFFI", "输出生成的rust调用函数的结果: $greeting")
-                        // 输出 "Greeting: Hello, Rust!"
-
                     }
                 }
             }
         }
-
     }
 }
 
@@ -95,6 +76,5 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun GreetingPreview() {
     RustApplicationTheme {
         Greeting("Android")
-
     }
 }

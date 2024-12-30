@@ -4,7 +4,7 @@ use jni::JNIEnv;
 use tokio;
 
 #[no_mangle]
-pub extern "C" fn Java_com_galigeigei_rustapplication_MainActivity_greet(
+pub extern "C" fn Java_com_galigeigei_rustapplication_RustLib_greet(
     mut env: JNIEnv,
     _class: JClass,
     input: JString,
@@ -24,7 +24,7 @@ pub extern "C" fn Java_com_galigeigei_rustapplication_MainActivity_greet(
 }
 
 #[no_mangle]
-pub extern "C" fn Java_com_galigeigei_rustapplication_MainActivity_say(
+pub extern "C" fn Java_com_galigeigei_rustapplication_RustLib_say(
     mut env: JNIEnv,
     _class: JClass,
     input: JString,
@@ -40,10 +40,11 @@ pub extern "C" fn Java_com_galigeigei_rustapplication_MainActivity_say(
         .into_raw()
 }
 
-const PC_API_URL: &str = "http://192.168.5.18:8080";
+const PC_API_URL: &str = "http://192.168.31.225:9991";
+// const PC_API_URL: &str = "http://192.168.5.18:8080";
 
 #[no_mangle]
-pub extern "C" fn Java_com_galigeigei_rustapplication_MainActivity_getApi<'a>(
+pub extern "C" fn Java_com_galigeigei_rustapplication_RustLib_getApi<'a>(
     env: JNIEnv<'a>,
     _class: JClass<'a>,
 ) -> jstring {
